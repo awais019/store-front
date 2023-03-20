@@ -66,6 +66,10 @@ from store.models import Product, OrderItem
 # only these fields will be fetched from db performs multiple queries if a field is not in the list
 # .defer('name', 'price') -> 
 # all fields except these will be fetched from db defers multiple queries if a field is in the list
+# select_related -> joins the tables for 1 to 1 and 1 to many relationships
+# .select_related('collection')
+# prefetch_related -> joins the tables for many to many relationships
+# .prefetch_related('collection')
 
 def say_hello(request):
     # pull data from db
@@ -75,10 +79,9 @@ def say_hello(request):
     #     prodcut = Product.objects.get(pk=0)
     # except ObjectDoesNotExist:
     #     pass
-    queryset = Product.objects.filter(
-        id__in = OrderItem.objects.values('product__id').distinct()).order_by(
-        'title')
-    # queryset = OrderItem.objects.values('product__id').distinct()
+
+    # queryset = Product.objects.select_related('collection').all()
+    queryset = Product.objects.prefetch_related('promotions').all()
 
     # return HttpResponse('Hello World')
     return render(request, 'hello.html', { 'name': 'Awais', 'products': list(queryset) })
