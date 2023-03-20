@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q, F, Value, Func
+from django.db.models import Q, F, Value, Func, ExpressionWrapper, DecimalField
 from django.db.models.aggregates import Count, Max, Min, Avg
 from django.db.models.functions import Concat
 from django.http import HttpResponse
@@ -84,9 +84,10 @@ def say_hello(request):
     #     prodcut = Product.objects.get(pk=0)
     # except ObjectDoesNotExist:
     #     pass
-
-    query_set = Customer.objects.annotate(
-        orders_count = Count('order')
+    
+    discounted_price = ExpressionWrapper(F('price') * 0.8, output_field=DecimalField())
+    query_set = Product.objects.annotate(
+        discounted_price = discounted_price
     )
 
     # return HttpResponse('Hello World')
