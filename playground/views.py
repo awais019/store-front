@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q, F
+from django.db.models.aggregates import Count, Max, Min, Avg
 from django.http import HttpResponse
 from store.models import Product, OrderItem, Order
 # Create your views here.
@@ -70,6 +71,8 @@ from store.models import Product, OrderItem, Order
 # .select_related('collection')
 # prefetch_related -> joins the tables for many to many relationships
 # .prefetch_related('collection')
+# aggregating objects
+# Count, Max, Min, Avg
 
 def say_hello(request):
     # pull data from db
@@ -80,10 +83,7 @@ def say_hello(request):
     # except ObjectDoesNotExist:
     #     pass
 
-    queryset = Order.objects.select_related(
-        'customer').prefetch_related(
-        'orderitem_set__product').order_by(
-        '-placed_at')[:5]
+    result = Product.objects.aggregate(count = Count('id'),min_price = Min('price'))
 
     # return HttpResponse('Hello World')
-    return render(request, 'hello.html', { 'name': 'Awais', 'products': list(queryset) })
+    return render(request, 'hello.html', { 'name': 'Awais', 'result': result })
