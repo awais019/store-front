@@ -26,7 +26,12 @@ from store.models import Product
 # .get() returns the first object that matches the filter
 # .create() creates a new object in the db
 # .update() updates an object in the db
-
+# look up types of filters
+# https://docs.djangoproject.com/en/3.1/topics/db/queries/#field-lookups
+# gt -> greater than
+# gte -> greater than or equal to
+# lt -> less than
+# lte -> less than or equal to
 
 def say_hello(request):
     # pull data from db
@@ -37,7 +42,7 @@ def say_hello(request):
     # except ObjectDoesNotExist:
     #     pass
 
-    product = Product.objects.filter(pk=0).first()
+    query_set = Product.objects.filter(title__icontains='coffee')
 
     # return HttpResponse('Hello World')
-    return render(request, 'hello.html', { 'name': 'Awais' })
+    return render(request, 'hello.html', { 'name': 'Awais', 'products': list(query_set) })
