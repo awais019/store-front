@@ -28,8 +28,16 @@ class CustomerAdmin(admin.ModelAdmin):
     ordering = ['first_name', 'last_name']
     list_per_page = 10
 
+    @admin.display(ordering='orders_count')
     def orders_count(self, customer):
-        return customer.orders_count
+        url = (
+            reverse('admin:store_order_changelist')
+            + '?'
+            + urlencode({
+            'customer__id': str(customer.id)
+            })
+        )
+        return format_html('<a href="{}">{}</a>', url, customer.id)
 
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(
