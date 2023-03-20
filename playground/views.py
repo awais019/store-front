@@ -55,6 +55,12 @@ from store.models import Product
 # .all()[:10]
 # .all()[10:20]
 # .all()[10:20:2]
+# selecting specific fields
+# .values('name', 'price')
+# .values_list('name', 'price')
+# .values_list('name', 'price', flat=True)
+# .values_list('name', 'price', named=True)
+# .values_list('name', 'price', named=True).first()
 
 def say_hello(request):
     # pull data from db
@@ -65,7 +71,7 @@ def say_hello(request):
     # except ObjectDoesNotExist:
     #     pass
 
-    queryset = Product.objects.all()[:10]
+    queryset = Product.objects.values_list('id', 'title', 'collection__title')
 
     # return HttpResponse('Hello World')
     return render(request, 'hello.html', { 'name': 'Awais', 'products': list(queryset) })
