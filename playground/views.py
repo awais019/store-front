@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from store.models import Product
 # Create your views here.
@@ -19,11 +20,24 @@ from store.models import Product
 # .create() -> object
 # .update() -> object
 
+# retreiving data from db
+# .all() returns all the objects in the db
+# .filter() returns all the objects that match the filter
+# .get() returns the first object that matches the filter
+# .create() creates a new object in the db
+# .update() updates an object in the db
+
+
 def say_hello(request):
     # pull data from db
     # Transform
     # send email
-    query_set = Product.objects.all()
-    for product in query_set:
-        print(product)
+    # try:
+    #     prodcut = Product.objects.get(pk=0)
+    # except ObjectDoesNotExist:
+    #     pass
+
+    product = Product.objects.filter(pk=0).first()
+
+    # return HttpResponse('Hello World')
     return render(request, 'hello.html', { 'name': 'Awais' })
