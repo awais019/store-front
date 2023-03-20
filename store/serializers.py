@@ -12,7 +12,7 @@ class CollectionSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'title', 'price', 'price_with_tax', 'collection']
+        fields = ['id', 'title', 'description', 'slug', 'inventory', 'price', 'price_with_tax', 'collection']
     # id = serializers.IntegerField()
     # title = serializers.CharField(max_length=255)
     # price = serializers.DecimalField(max_digits=6, decimal_places=2)
@@ -31,3 +31,14 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def calculate_tax(self, product):
         return product.price * Decimal(1.1)
+    
+    # def create(self, validated_data):
+    #     product = Product(**validated_data)
+    #     product.other = 1
+    #     product.save()
+    #     return product
+
+    # def update(self, instance, validated_data):
+    #     instance.price = validated_data.get('price')
+    #     instance.save()
+    #     return instance
