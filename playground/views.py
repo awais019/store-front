@@ -85,13 +85,8 @@ def say_hello(request):
     # except ObjectDoesNotExist:
     #     pass
 
-    # query_set = Customer.objects.annotate(is_new=Value(True))
     query_set = Customer.objects.annotate(
-        full_name = Func(F('first_name'), Value(' '), F('last_name'), function='CONCAT')
-    )
-
-    query_set = Customer.objects.annotate(
-        full_name = Concat('first_name', Value(' '), 'last_name')
+        orders_count = Count('order')
     )
 
     # return HttpResponse('Hello World')
