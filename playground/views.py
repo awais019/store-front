@@ -42,6 +42,15 @@ from store.models import Product
 # referencing fields using F
 # .filter(price__gt=F('inventory'))
 # .filter(price__gt=F('inventory') * 2)
+# sorting data
+# .order_by('price')
+# .order_by('-price')
+# .order_by('price', 'inventory')
+# .order_by('price', '-inventory')
+# .order_by('price', '-inventory').reverse()
+# earliest and latest
+# .earliest('price') -> in ascending order
+# .latest('price') -> in descending order
 
 def say_hello(request):
     # pull data from db
@@ -52,7 +61,7 @@ def say_hello(request):
     # except ObjectDoesNotExist:
     #     pass
 
-    queryset = Product.objects.filter(inventory=F('price'))
+    queryset = Product.objects.order_by('title')
 
     # return HttpResponse('Hello World')
     return render(request, 'hello.html', { 'name': 'Awais', 'products': list(queryset) })
