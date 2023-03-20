@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q
+from django.db.models import Q, F
 from django.http import HttpResponse
 from store.models import Product
 # Create your views here.
@@ -39,6 +39,9 @@ from store.models import Product
 # .filter().exclude().filter()
 # using OR
 # .filter(Q(price__gt=100) | Q(price__lt=10))
+# referencing fields using F
+# .filter(price__gt=F('inventory'))
+# .filter(price__gt=F('inventory') * 2)
 
 def say_hello(request):
     # pull data from db
@@ -49,7 +52,7 @@ def say_hello(request):
     # except ObjectDoesNotExist:
     #     pass
 
-    queryset = Product.objects.filter(Q(inventory__lt=10) | Q(price__lt=20))
+    queryset = Product.objects.filter(inventory=F('price'))
 
     # return HttpResponse('Hello World')
     return render(request, 'hello.html', { 'name': 'Awais', 'products': list(queryset) })
