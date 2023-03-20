@@ -24,6 +24,10 @@ class ProductSerializer(serializers.ModelSerializer):
         # queryset=Collection.objects.all(),
         # view_name='collection_detail'
     # )
+    # def validate(self, data):
+    #     if data['password'] != data['confirm_password']:
+    #         return serializers.ValidationError('Passwords do not match')
+    #     return data
 
     def calculate_tax(self, product):
         return product.price * Decimal(1.1)
