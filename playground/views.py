@@ -51,6 +51,10 @@ from store.models import Product
 # earliest and latest
 # .earliest('price') -> in ascending order
 # .latest('price') -> in descending order
+# limiting data
+# .all()[:10]
+# .all()[10:20]
+# .all()[10:20:2]
 
 def say_hello(request):
     # pull data from db
@@ -61,7 +65,7 @@ def say_hello(request):
     # except ObjectDoesNotExist:
     #     pass
 
-    queryset = Product.objects.order_by('title')
+    queryset = Product.objects.all()[:10]
 
     # return HttpResponse('Hello World')
     return render(request, 'hello.html', { 'name': 'Awais', 'products': list(queryset) })
