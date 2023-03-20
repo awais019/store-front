@@ -61,6 +61,11 @@ from store.models import Product, OrderItem
 # .values_list('name', 'price', flat=True)
 # .values_list('name', 'price', named=True)
 # .values_list('name', 'price', named=True).first()
+# only and defer
+# .only('name', 'price') -> 
+# only these fields will be fetched from db performs multiple queries if a field is not in the list
+# .defer('name', 'price') -> 
+# all fields except these will be fetched from db defers multiple queries if a field is in the list
 
 def say_hello(request):
     # pull data from db
