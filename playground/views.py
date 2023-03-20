@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q, F, Value
+from django.db.models import Q, F, Value, Func
 from django.db.models.aggregates import Count, Max, Min, Avg
+from django.db.models.functions import Concat
 from django.http import HttpResponse
 from store.models import Product, OrderItem, Order, Customer
 # Create your views here.
@@ -85,7 +86,13 @@ def say_hello(request):
     #     pass
 
     # query_set = Customer.objects.annotate(is_new=Value(True))
-    query_set = Customer.objects.annotate(new_id=F('id') + 1)
+    query_set = Customer.objects.annotate(
+        full_name = Func(F('first_name'), Value(' '), F('last_name'), function='CONCAT')
+    )
+
+    query_set = Customer.objects.annotate(
+        full_name = Concat('first_name', Value(' '), 'last_name')
+    )
 
     # return HttpResponse('Hello World')
     return render(request, 'hello.html', { 'name': 'Awais', 'result': list(query_set) })
