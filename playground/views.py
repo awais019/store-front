@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q, F
+from django.db.models import Q, F, Value
 from django.db.models.aggregates import Count, Max, Min, Avg
 from django.http import HttpResponse
-from store.models import Product, OrderItem, Order
+from store.models import Product, OrderItem, Order, Customer
 # Create your views here.
 # request -> response
 # request handler
@@ -73,6 +73,7 @@ from store.models import Product, OrderItem, Order
 # .prefetch_related('collection')
 # aggregating objects
 # Count, Max, Min, Avg
+# Annotate objects
 
 def say_hello(request):
     # pull data from db
@@ -83,7 +84,8 @@ def say_hello(request):
     # except ObjectDoesNotExist:
     #     pass
 
-    result = Product.objects.aggregate(count = Count('id'),min_price = Min('price'))
+    # query_set = Customer.objects.annotate(is_new=Value(True))
+    query_set = Customer.objects.annotate(new_id=F('id') + 1)
 
     # return HttpResponse('Hello World')
-    return render(request, 'hello.html', { 'name': 'Awais', 'result': result })
+    return render(request, 'hello.html', { 'name': 'Awais', 'result': list(query_set) })
