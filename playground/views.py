@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.http import HttpResponse
 from store.models import Product
 # Create your views here.
@@ -32,6 +33,12 @@ from store.models import Product
 # gte -> greater than or equal to
 # lt -> less than
 # lte -> less than or equal to
+# complex filtering using chaining
+# .filter().filter().filter()
+# .filter().exclude()
+# .filter().exclude().filter()
+# using OR
+# .filter(Q(price__gt=100) | Q(price__lt=10))
 
 def say_hello(request):
     # pull data from db
@@ -42,7 +49,7 @@ def say_hello(request):
     # except ObjectDoesNotExist:
     #     pass
 
-    query_set = Product.objects.filter(title__icontains='coffee')
+    queryset = Product.objects.filter(Q(inventory__lt=10) | Q(price__lt=20))
 
     # return HttpResponse('Hello World')
-    return render(request, 'hello.html', { 'name': 'Awais', 'products': list(query_set) })
+    return render(request, 'hello.html', { 'name': 'Awais', 'products': list(queryset) })
