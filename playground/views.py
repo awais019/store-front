@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q, F
 from django.http import HttpResponse
-from store.models import Product
+from store.models import Product, OrderItem
 # Create your views here.
 # request -> response
 # request handler
@@ -70,8 +70,10 @@ def say_hello(request):
     #     prodcut = Product.objects.get(pk=0)
     # except ObjectDoesNotExist:
     #     pass
-
-    queryset = Product.objects.values_list('id', 'title', 'collection__title')
+    queryset = Product.objects.filter(
+        id__in = OrderItem.objects.values('product__id').distinct()).order_by(
+        'title')
+    # queryset = OrderItem.objects.values('product__id').distinct()
 
     # return HttpResponse('Hello World')
     return render(request, 'hello.html', { 'name': 'Awais', 'products': list(queryset) })
