@@ -1,13 +1,9 @@
-from django.shortcuts import get_list_or_404
-from django.http import HttpResponse
 from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.decorators import api_view
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.filters import SearchFilter
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.views import APIView
 
 from .models import Product, Collection, OrderItem, Review
 from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer
@@ -17,8 +13,9 @@ from .filters import ProductFilter
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = ProductFilter
+    search_fields = ['title', 'description']
 
     def get_serializer_context(self):
         return {'request': self.request }
