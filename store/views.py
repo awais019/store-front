@@ -1,14 +1,15 @@
 from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.response import Response
 from rest_framework import status
 
-from .models import Product, Collection, OrderItem, Review, Cart, CartItem
+from .models import Product, Collection, OrderItem, Review, Cart, CartItem, Customer
 from .serializers import ProductSerializer, CollectionSerializer, \
-    ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer
+    ReviewSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer \
+    , CustomerSerializer
 from .filters import ProductFilter
 from .pagination import DefaultPagination
 # Create your views here.
@@ -80,3 +81,10 @@ class CartItemViewSet(ModelViewSet):
         return CartItem.objects \
             .filter(cart_id=self.kwargs['cart_pk']) \
             .select_related('product')
+
+class CustomerViewSet(CreateModelMixin,
+                    RetrieveModelMixin, 
+                    UpdateModelMixin, 
+                    GenericViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
