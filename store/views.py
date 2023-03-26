@@ -14,7 +14,7 @@ from .serializers import ProductSerializer, CollectionSerializer, \
     , CustomerSerializer
 from .filters import ProductFilter
 from .pagination import DefaultPagination
-from .permissions import IsAdminOrReadOnly, FullDjangoModelPermissions
+from .permissions import IsAdminOrReadOnly, ViewCustomerHistoryPermission
 # Create your views here.
 
 class ProductViewSet(ModelViewSet):
@@ -96,6 +96,10 @@ class CustomerViewSet(ModelViewSet):
         if self.request.method == 'GET':
             return [AllowAny()]
         return [IsAuthenticated()]
+
+    @action(detail=True, permission_classes=[ViewCustomerHistoryPermission])
+    def history(self, request, pk):
+        return Response('Ok')
 
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request):
