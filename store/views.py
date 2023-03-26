@@ -14,7 +14,7 @@ from .serializers import ProductSerializer, CollectionSerializer, \
     , CustomerSerializer
 from .filters import ProductFilter
 from .pagination import DefaultPagination
-from .permissions import IsAdminOrReadOnly
+from .permissions import IsAdminOrReadOnly, FullDjangoModelPermissions
 # Create your views here.
 
 class ProductViewSet(ModelViewSet):
