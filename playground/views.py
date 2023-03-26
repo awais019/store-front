@@ -1,11 +1,9 @@
+from django.core.mail import send_mail, mail_admins, BadHeaderError
 from django.shortcuts import render
-from django.db import connection
-from store.models import Order, OrderItem, Product, Customer, Collection
 
 def say_hello(request):
-    
-    # queryset = Product.objects.raw("SELECT * from store_product")
-    with connection.cursor() as cursor:
-        cursor.execute()
-
+    try:
+        mail_admins('Hello', 'Hello from Awais', html_message='<h1>Hello</h1>')
+    except BadHeaderError:
+        pass
     return render(request, 'hello.html', { 'name': 'Awais' })
