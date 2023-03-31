@@ -176,3 +176,5 @@ DEFAULT_FROM_EMAIL = 'admin@localhost'
 ADMINS = [
     ('Awais','awais@localhost')
 ]
+
+CELERY_BROKER_URL = 'redis://localhost:6379/1'
