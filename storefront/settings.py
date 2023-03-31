@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'djoser',
+    'silk',
     'playground',
     'debug_toolbar',
     'store',
@@ -52,7 +53,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',  
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,6 +62,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if DEBUG:
+    MIDDLEWARE += ['silk.middleware.SilkyMiddleware']
 
 INTERNAL_IPS = [
     '127.0.0.1'
@@ -93,10 +97,10 @@ WSGI_APPLICATION = 'storefront.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env("DB_NAME"), 
+        'NAME': env("DB_NAME"),
         'USER': env("DB_USER"),
         'PASSWORD': env("DB_PASSWORD"),
-        'HOST': env("DB_HOST"), 
+        'HOST': env("DB_HOST"),
         'PORT': env("DB_PORT"),
     }
 }
@@ -153,16 +157,16 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('JWT',),
-   'ACCESS_TOKEN_LIFETIME': timedelta(days=1)
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1)
 }
 
 AUTH_USER_MODEL = 'core.User'
 
 DJOSER = {
     'SERIALIZERS': {
-    'user_create': 'core.serializers.UserCreateSerializer',
-    'current_user': 'core.serializers.UserSerializer',
+        'user_create': 'core.serializers.UserCreateSerializer',
+        'current_user': 'core.serializers.UserSerializer',
     }
 }
 
@@ -174,7 +178,7 @@ EMAIL_PORT = 2525
 DEFAULT_FROM_EMAIL = 'admin@localhost'
 
 ADMINS = [
-    ('Awais','awais@localhost')
+    ('Awais', 'awais@localhost')
 ]
 
 CELERY_BROKER_URL = 'redis://localhost:6379/1'

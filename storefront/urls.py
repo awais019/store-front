@@ -20,7 +20,7 @@ from django.urls import path, include
 import debug_toolbar
 
 admin.site.site_header = 'Storefront Admin'
-admin.site.index_title = 'Admin' 
+admin.site.index_title = 'Admin'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,4 +32,6 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]
