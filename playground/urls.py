@@ -4,5 +4,5 @@ from . import views
 
 # URL configuration for the playground app
 urlpatterns = [
-    path('hello/', views.say_hello, name='hello'),
+    path('hello/', views.HelloView.as_view(), name='hello'),
 ]
