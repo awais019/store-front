@@ -1,7 +1,6 @@
-from django.views.generic import TemplateView
 from django.urls import path
-
+from . import views
 # URL configuration for the playground app
 urlpatterns = [
-    path('', view=TemplateView.as_view(template_name='core/index.html'), name='index'),
+    path('', views.server_check),
 ]
