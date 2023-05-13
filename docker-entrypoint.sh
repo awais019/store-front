@@ -4,10 +4,11 @@
 echo "Apply database migrations"
 python manage.py migrate
 python manage.py collectstatic --noinput
-DJANGO_SUPERUSER_USERNAME=testuser \
-DJANGO_SUPERUSER_PASSWORD=testpass \
-DJANGO_SUPERUSER_EMAIL="admin@admin.com" \
+DJANGO_SUPERUSER_USERNAME=awais \
+DJANGO_SUPERUSER_PASSWORD=awais@20 \
+DJANGO_SUPERUSER_EMAIL="awais@awais.com" \
 python manage.py createsuperuser --noinput
+python manage.py seed_db
 
 # Start server
 echo "Starting server"
